@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  bot:
+    build:
+      context: ./bot
+    container_name: bot
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "80:80"  # Проброс порта 80 с хост-машины внутрь контейнера
+
+  checker:
+    build:
+      context: ./cron_checker
+    container_name: cron_checker

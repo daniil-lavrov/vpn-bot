@@ -1,0 +1,17 @@
+greet = " Приветствие . спасибо, что присоедениоись, поддключиться тут /connection сразу купить тут /subscription"
+about = " О боте"
+status = "о статус"
+connection = "подключиться как"
+error_repeat = "ошибка, попробуйте ещё раз"
+no_config = 'не конфига'
+no_available_config = 'fff'
+config_button = "получить конфиг"
+status_active = 'ss'
+status_inactive = 'ssss'
+status_frozen = 'sad'
+wrong_config = "не тот путь"
+ads_button = "смотреть объявления"
+config_unfroze_suc = 'ваша конфигурация разморожена'
+wait_please = 'разморозим через 12 секунд'
+go_to_connection_to_activate = 'перейдите в подключение для активации записи'
+go_to_status_to_unfroze = 'перейжите в статус для активации'

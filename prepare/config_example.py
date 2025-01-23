@@ -1,0 +1,2 @@
+DATA_BASE_CONNECTION = "?"
+QUANTITY_OF_CONFIGS = "int число"
