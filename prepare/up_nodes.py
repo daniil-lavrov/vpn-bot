@@ -44,8 +44,8 @@ def up_node(ip, password):
         c.run("cd /etc/wireguard/")
 
         c.run("wg genkey | tee /etc/wireguard/server_privatekey | wg pubkey | tee /etc/wireguard/server_publickey")
-        wg_genkey = (c.run("cat server_privatekey", hide=True)).stdout.strip()
-        wg_pubkey = (c.run("cat server_publickey", hide=True)).stdout.strip()
+        wg_genkey = (c.run("cat /etc/wireguard/server_privatekey", hide=True)).stdout.strip()
+        wg_pubkey = (c.run("cat /etc/wireguard/server_publickey", hide=True)).stdout.strip()
 
         c.run("sudo touch wg0.conf")
 
@@ -58,7 +58,7 @@ def up_node(ip, password):
         PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
         """
 
-        c.run(f"sudo echo '{config_content}' > wg0.conf", pty=True)
+        c.run(f"sudo echo '{config_content}' > /etc/wireguard/wg0.conf", pty=True)
 
         c.run('echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf')
         c.run("sysctl -p")
@@ -118,7 +118,7 @@ with Session() as session:
         for i in range(1, config.QUANTITY_OF_CONFIGS):
             new_record = Configs(
                 node_name=node_name,
-                config_number=i,
+                config_num=i,
                 available=True
             )
             session.add(new_record)

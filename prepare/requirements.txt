@@ -1,4 +1,4 @@
 SQLAlchemy==2.0.37
-aiohttp==3.11.11
 pymysql==1.0.3
 decorator==5.1.1
+fabric==3.0.1

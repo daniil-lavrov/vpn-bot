@@ -70,7 +70,7 @@ class User_manager:
 
                 user = session.query(Users).filter_by(chat_id=chat_id).first()
 
-                answer = await User_manager.api_unfroze(f"{user.node_name}/{str(user.config_number)}")
+                answer = await User_manager.api_unfroze(f"{user.node_name}/{str(user.config_num)}")
 
                 if answer == 'error_repeat':
                     session.rollback()
@@ -139,7 +139,7 @@ class User_manager:
 
                     else:
 
-                        answer = await User_manager.api_unfroze(f"{config.node_name}/{str(config.config_number)}")
+                        answer = await User_manager.api_unfroze(f"{config.node_name}/{str(config.config_num)}")
                         if answer == 'error_repeat':
                             return 'error_repeat'
 

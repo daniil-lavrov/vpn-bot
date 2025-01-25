@@ -1,6 +1,6 @@
 from aiogram import Router, types
 from aiogram.filters import Command, StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, BufferedInputFile
 from user_manager import User_manager
 import asyncio
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -79,7 +79,7 @@ async def process_callback(callback_query: types.CallbackQuery):
                 if config_file == 'error_repeat':
                     await callback_query.message.answer(text.error_repeat)
                 else:
-                    await callback_query.answer()
-                    await callback_query.message.reply_document(document=config_file)
+                    file_to_send = BufferedInputFile(config_file.getvalue(), filename="your_config.conf")
+                    await callback_query.message.reply_document(document=file_to_send)
         else:
             await callback_query.message.answer(text.wrong_config)
