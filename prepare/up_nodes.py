@@ -69,7 +69,7 @@ def up_node(ip, password):
 
         c.run("mkdir /root/config/")
 
-        for i in range(1, config.QUANTITY_OF_CONFIGS):
+        for i in range(1, config.QUANTITY_OF_CONFIGS+1):
 
             c.run(
                 f"wg genkey | tee /etc/wireguard/user{i}_privatekey | wg pubkey | tee /etc/wireguard/user{i}_publickey")
@@ -115,7 +115,7 @@ with Session() as session:
         password = node.password
         up_node(ip, password)
         node_name = node.node_name
-        for i in range(1, config.QUANTITY_OF_CONFIGS):
+        for i in range(1, config.QUANTITY_OF_CONFIGS+1):
             new_record = Configs(
                 node_name=node_name,
                 config_num=i,

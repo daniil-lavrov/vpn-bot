@@ -12,6 +12,5 @@ status_frozen = 'sad'
 wrong_config = "не тот путь"
 ads_button = "смотреть объявления"
 config_unfroze_suc = 'ваша конфигурация разморожена'
-wait_please = 'разморозим через 12 секунд'
 go_to_connection_to_activate = 'перейдите в подключение для активации записи'
 go_to_status_to_unfroze = 'перейжите в статус для активации'

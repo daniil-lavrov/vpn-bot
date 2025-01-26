@@ -66,8 +66,6 @@ async def process_callback(callback_query: types.CallbackQuery):
             await callback_query.message.answer(text.error_repeat)
         else:
             await callback_query.message.answer(ads_text)
-            await callback_query.answer(text.wait_please)
-            await asyncio.sleep(12)
             await callback_query.message.answer(text.config_unfroze_suc)
     else:
         answer = await User_manager.check_config_owner(callback_query.message.chat.id, data)

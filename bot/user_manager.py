@@ -65,6 +65,7 @@ class User_manager:
                 user = session.query(Users).filter_by(chat_id=chat_id).first()
 
                 user.last_ads = datetime.now()
+                user.status = 'active'
 
                 # Сохранение изменений в базе данных
 

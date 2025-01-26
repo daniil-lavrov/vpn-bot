@@ -31,13 +31,19 @@ async with aiohttp.ClientSession() as http_session:
 
             path = user.node_name + "/" + str(user.config_num)
 
-            if time_difference > timedelta(days=1):
-                async with http_session.get(f'http://backend/froze/{path}') as response:
-                    if response.status == 200:
-                        pass
+            if user.status == 'active':
+                if time_difference > timedelta(days=1):
+                    async with http_session.get(f'http://backend/froze/{path}') as response:
+                        if response.status == 200:
+                            user.status = 'frozen'
+                            db_session.commit()
 
-            elif time_difference > timedelta(days=3):
-                async with http_session.get(f'http://backend/refresh/{path}') as response:
-                    if response.status == 200:
-                        pass
+            elif user.status == 'frozen':
+                if time_difference > timedelta(days=3):
+                    async with http_session.get(f'http://backend/refresh/{path}') as response:
+                        if response.status == 200:
+                            user.status = 'inactive'
+                            db_session.commit()
+
+
 
