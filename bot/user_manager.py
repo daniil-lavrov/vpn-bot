@@ -1,4 +1,3 @@
-from fastapi import requests
 from datetime import datetime
 from sqlalchemy import create_engine, Column, BigInteger, String, inspect, Boolean, Integer, distinct, \
     DateTime, func
