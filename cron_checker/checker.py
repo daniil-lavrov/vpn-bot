@@ -22,28 +22,34 @@ class Users(Base):
 
 async with aiohttp.ClientSession() as http_session:
     with Session() as db_session:
-        # Извлекаем всех пользователей из таблицы
-        users = db_session.query(Users).all()
+        try:
+            # Извлекаем всех пользователей из таблицы
+            users = db_session.query(Users).all()
 
-        for user in users:
-            time_now = datetime.now()
-            time_difference = time_now - user.last_ads
+            for user in users:
+                time_now = datetime.now()
+                time_difference = time_now - user.last_ads
 
-            path = user.node_name + "/" + str(user.config_num)
+                path = user.node_name + "/" + str(user.config_num)
 
-            if user.status == 'active':
-                if time_difference > timedelta(days=1):
-                    async with http_session.get(f'http://backend/froze/{path}') as response:
-                        if response.status == 200:
-                            user.status = 'frozen'
-                            db_session.commit()
+                if user.status == 'active':
+                    if time_difference > timedelta(days=1):
+                        async with http_session.get(f'http://backend/froze/{path}') as response:
+                            if response.status == 200:
+                                user.status = 'frozen'
+                                db_session.commit()
 
-            elif user.status == 'frozen':
-                if time_difference > timedelta(days=3):
-                    async with http_session.get(f'http://backend/refresh/{path}') as response:
-                        if response.status == 200:
-                            user.status = 'inactive'
-                            db_session.commit()
+                elif user.status == 'frozen':
+                    if time_difference > timedelta(days=3):
+                        async with http_session.get(f'http://backend/refresh/{path}') as response:
+                            if response.status == 200:
+                                user.status = 'inactive'
+                                user.node_name = '-'
+                                user.config_num = 0
+                                db_session.commit()
+
+        except:
+            pass
 
 
 
