@@ -1,9 +1,11 @@
+import requests
+from sqlalchemy.orm import sessionmaker
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine, Column, String, inspect, Boolean, Integer, DateTime, func, BigInteger
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from datetime import datetime, timedelta
 import config
-import aiohttp
 
 engine = create_engine(f'mysql+pymysql://{config.DATA_BASE_CONNECTION}', echo=True)
 inspector = inspect(engine)
@@ -19,8 +21,10 @@ class Users(Base):
     status = Column(String(10))
     last_ads = Column(DateTime, default=func.now(), nullable=False)
 
+# Создайте фабрику сессий
+Session = sessionmaker(bind=engine)
 
-async with aiohttp.ClientSession() as http_session:
+def check_user_status():
     with Session() as db_session:
         try:
             # Извлекаем всех пользователей из таблицы
@@ -34,22 +38,27 @@ async with aiohttp.ClientSession() as http_session:
 
                 if user.status == 'active':
                     if time_difference > timedelta(days=1):
-                        async with http_session.get(f'http://backend/froze/{path}') as response:
-                            if response.status == 200:
-                                user.status = 'frozen'
-                                db_session.commit()
+                        response = requests.get(f'http://backend/froze/{path}')
+                        if response.status_code == 200:
+                            user.status = 'frozen'
+                            db_session.commit()
 
                 elif user.status == 'frozen':
                     if time_difference > timedelta(days=3):
-                        async with http_session.get(f'http://backend/refresh/{path}') as response:
-                            if response.status == 200:
-                                user.status = 'inactive'
-                                user.node_name = '-'
-                                user.config_num = 0
-                                db_session.commit()
+                        response = requests.get(f'http://backend/refresh/{path}')
+                        if response.status_code == 200:
+                            user.status = 'inactive'
+                            user.node_name = '-'
+                            user.config_num = 0
+                            db_session.commit()
 
-        except:
-            pass
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+if __name__ == '__main__':
+    check_user_status()
+
+
 
 
 

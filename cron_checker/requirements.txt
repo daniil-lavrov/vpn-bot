@@ -1,4 +1,5 @@
 SQLAlchemy==2.0.37
-aiohttp==3.11.11
 pymysql==1.0.3
 decorator==5.1.1
+cryptography==44.0.0
+requests==2.31.0
